@@ -47,25 +47,7 @@ const Header = () => {
              </div>           
         </div>
            {/* mobile view */}
-        <div
-        className={`md:hidden fixed top-0 left-0 w-full h-full transition-transform transform ${
-          isOpen ? 'translate-x-0' : 'translate-x-full'
-        } bg-white text-gray-900 z-50 flex flex-col items-center space-y-8 pt-24`}
-      >
-            <nav>
-              <a href="#home" className="hover:text-green-300">Etusivu</a>
-              <a href="#about" className="hover:text-green-300">Tietoa Ruutikankaasta</a>
-              <a href="#news" className="hover:text-green-300">Ajankohtaista</a>
-              <a href="#contact" className="hover:text-green-300">Yhteystiedot</a>
-            </nav>
-      {/* Desktop Menu */}
-      <nav className="hidden md:flex space-x-8 text-white">
-        <a href="#home" className="hover:text-gray-300">Etusivu</a>
-        <a href="#about" className="hover:text-gray-300">Tietoa Ruutikankaasta</a>
-        <a href="#news" className="hover:text-gray-300">Ajankohtaista</a>
-        <a href="#contact" className="hover:text-gray-300">Yhteystiedot</a>
-      </nav>
-        </div>
+   
         
 
         </header>
