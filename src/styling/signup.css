@@ -1,0 +1,141 @@
+/* General Styles for Background and Form Containers */
+//need to refine this
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f3f4f6; /* Light grey background to create a contrast with the form container */
+  }
+  
+  .min-h-screen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f3f4f6;
+  }
+  
+  .form-container {
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Styling for Form Headings */
+  .text-center h1 {
+    font-weight: bold;
+    color: #333333;
+  }
+  
+  /* Input Fields */
+  .form-control {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #d1d5db; /* Light border color */
+    border-radius: 5px;
+    transition: border-color 0.3s ease;
+  }
+  
+  .form-control:focus {
+    border-color: #6b46c1; /* Purple border when input is focused */
+    outline: none;
+    box-shadow: 0px 0px 5px rgba(107, 70, 193, 0.3); /* Purple shadow effect */
+  }
+  
+  /* Buttons */
+  .btn-primary {
+    background-color: #6b46c1; /* Purple button background */
+    color: #ffffff;
+    padding: 10px 0;
+    border: none;
+    border-radius: 5px;
+    width: 100%;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .btn-primary:hover {
+    background-color: #553c9a; /* Darker purple on hover */
+  }
+  
+  .btn-primary:active {
+    transform: scale(0.98); /* Slightly shrink button on click */
+  }
+  
+  /* Password Toggle Button */
+  .password-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #6b7280; /* Grey color for the text */
+  }
+  
+  .password-toggle:hover {
+    color: #553c9a; /* Darker purple when hovering */
+  }
+  
+  /* Link Styles */
+  a {
+    color: #6b46c1; /* Purple links */
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  a:hover {
+    color: #553c9a; /* Darker purple on hover */
+  }
+  
+  .text-sm {
+    font-size: 0.875rem;
+  }
+  
+  .text-red-500 {
+    color: #ef4444; /* Red color for error messages */
+  }
+  
+  .text-purple-500 {
+    color: #6b46c1;
+  }
+  
+  .text-purple-700 {
+    color: #553c9a;
+  }
+  
+  .hover\:text-purple-600:hover {
+    color: #553c9a;
+  }
+  
+  /* Utility classes for space and alignment */
+  .mt-6 {
+    margin-top: 1.5rem;
+  }
+  
+  .mt-4 {
+    margin-top: 1rem;
+  }
+  
+  .mb-6 {
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Responsive Design */
+  @media (min-width: 768px) {
+    .max-w-lg {
+      max-width: 500px;
+    }
+  
+    .md\:text-3xl {
+      font-size: 2rem;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .password-toggle {
+      right: 8px; /* Adjusting right position for smaller screens */
+    }
+  }
+  
