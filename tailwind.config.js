@@ -8,6 +8,11 @@ module.exports = {
     backgroundImage: {
       'header-image': "url('/images/header-bg-800x350.jpg')",
     },
+    extend: {
+    screens: {
+      xs: "360px", // 極小屏幕
+    },
+  },
     extend: {},
   },
   plugins: [],
