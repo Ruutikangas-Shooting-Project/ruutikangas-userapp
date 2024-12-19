@@ -1,62 +1,72 @@
 import React, { useState, useContext  } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { LanguageContext } from '../context/languageContext';
-//import '../styles/signup.css'; // Optional custom CSS
+//import '../styles/signin.css'; // Optional, your custom CSS if needed
 import { useNavigate } from 'react-router-dom';
+import SignUp from './signup';
+import { auth } from "../firebase"
+import { signInWithEmailAndPassword } from 'firebase/auth';
 //import Header from './header';  
 //import NavBar from './navbar'; 
 
-
-const SignUp = () => {
-  // State for input fields and password visibility
-  const [name, setName] = useState('');
+const userData = () => {
+  // State for email, password, and toggling password visibility
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [error, setError] = useState("");
-  //for multi language
-  const { multiLang } = useContext(LanguageContext);
 
   const navigate = useNavigate();
+  const { multiLang } = useContext(LanguageContext);
   const text = {
     FI :{
-        h1txt:"Rekisteröidy",
-        name:"Nimi",
+        h1txt:"Kirjaudu",
         email:"Säköposti",
-        createpwd:"Sinun Salasana",
-        confirmpwd:"Vahvista Salasana",
-        haveacc:"Onko sinulla jo tili?",
+        pwd:"Salasana",
+        forget:"Unodut salasana?",
         login:"Kirjaudu",
-        SignUp:"Rekisteröidy"
+        SignUp:"Rekisteröidy",
+        noaccount:"Ei tunnusta? "
     },
     
     EN :{
-        h1txt:"Sign Up",
-        name:"Name",
+        h1txt:"Sign in",
         email:"Email",
-        createpwd:"Create Password",
-        confirmpwd:"Confirm Password",
-        haveacc:"Already have an account?",
+        pwd:"Password",
+        forget:"Forget password?",
         login:"Kirjaudu",
-        signUp:"Sign up"
-
+        signUp:"Sign up",
+        noaccount:"Don’t have an account?"
     }
   }
 
-  // Handler for form submission
+  // Handler for submitting the form
+  /*old code
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
-      setError("Passwords do not match");
-      return;
+    if (email === "test@example.com" && password === "password") {
+      setError("");
+      console.log("Login successful");
+      // Redirect to dashboard or any other page after successful login
+      navigate('/dashboard');
+    } else {
+      setError("Invalid email or password");
     }
-    setError("");
-    console.log("Email:", email, "Password:", password);
-    // Redirect after successful signup
-    navigate('/signin'); 
   };
-
+*/
+//new code test
+const handleSubmit = async(e) => {
+  e.preventDefault();
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    setError("");
+    console.log("login successful");
+    navigate("dashboard");
+  }catch {
+    setError("wrong email or password");
+    console.error(ere.message);
+  }
+};
   return (
     <>
       {/* Include Header and NavBar 
@@ -71,22 +81,6 @@ const SignUp = () => {
           </h1>
           {error && <p className="text-red-500 text-center">{error}</p>}
           <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="form-group">
-              <label htmlFor="name" className="block text-sm font-medium">
-              {text[multiLang].name}
-              </label>
-              <input
-                type="name"
-                id="name"
-                name="name"
-                className="form-control block w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:border-green-300"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                required
-              />
-               </div>
-        
-          
             <div className="form-group">
               <label htmlFor="email" className="block text-sm font-medium">
               {text[multiLang].email}
@@ -103,7 +97,7 @@ const SignUp = () => {
             </div>
             <div className="form-group">
               <label htmlFor="password" className="block text-sm font-medium">
-              {text[multiLang].createpwd}
+              {text[multiLang].pwd}
               </label>
               <div className="relative">
                 <input
@@ -115,6 +109,7 @@ const SignUp = () => {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
+                {/* Toggle Button for Password Visibility */}
                 <button
                   type="button"
                   onClick={() => setIsPasswordVisible(!isPasswordVisible)}
@@ -124,38 +119,29 @@ const SignUp = () => {
                 </button>
               </div>
             </div>
-            <div className="form-group">
-              <label htmlFor="confirm-password" className="block text-sm font-medium">
-              {text[multiLang].confirmpwd}
-              </label>
-              <input
-                type="password"
-                id="confirm-password"
-                name="confirmPassword"
-                className="form-control block w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:border-green-300"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                required
-              />
-            </div>
             <div className="text-center">
               <button
                 type="submit"
-                className="btn btn-primary w-full bg-purple-500 text-white rounded py-3 hover:bg-purple-600 focus:outline-none text-lg"
+                className="btn btn-primary w-full bg-purple-500 text-white rounded py-2 hover:bg-purple-600 focus:outline-none"
               >
-                 {text[multiLang].signUp}
+                {text[multiLang].login}
               </button>
+            </div>
+            <div className="text-center mt-4">
+              <a href="#forgot-password" className="text-sm text-gray-500 hover:text-purple-600">
+              {text[multiLang].forget}
+              </a>
             </div>
           </form>
           <div className="text-center mt-6">
             <p className="text-sm">
-            {text[multiLang].haveacc}{" "}
+            {text[multiLang].noaccount}{" "}
               <a
-                href="#signin"
+                href="#signup"
                 className="text-purple-500 hover:text-purple-700"
-                onClick={() => navigate('/signin')}
+                onClick={() => navigate('/signup')}
               >
-                 {text[multiLang].login}
+                 {text[multiLang].signUp}
               </a>
             </p>
           </div>
@@ -165,4 +151,4 @@ const SignUp = () => {
   );
 };
 
-export default SignUp;
+export default userData;

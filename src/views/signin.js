@@ -4,6 +4,8 @@ import { LanguageContext } from '../context/languageContext';
 //import '../styles/signin.css'; // Optional, your custom CSS if needed
 import { useNavigate } from 'react-router-dom';
 import SignUp from './signup';
+import { auth } from "../firebase"
+import { signInWithEmailAndPassword } from 'firebase/auth';
 //import Header from './header';  
 //import NavBar from './navbar'; 
 
@@ -39,6 +41,7 @@ const SignIn = () => {
   }
 
   // Handler for submitting the form
+  /*old code
   const handleSubmit = (e) => {
     e.preventDefault();
     if (email === "test@example.com" && password === "password") {
@@ -50,7 +53,20 @@ const SignIn = () => {
       setError("Invalid email or password");
     }
   };
-
+*/
+//new code test
+const handleSubmit = async(e) => {
+  e.preventDefault();
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    setError("");
+    console.log("login successful");
+    navigate("dashboard");
+  }catch(err) {
+    setError("wrong email or password");
+    console.error(err.message);
+  }
+};
   return (
     <>
       {/* Include Header and NavBar 
