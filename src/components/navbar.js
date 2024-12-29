@@ -1,5 +1,6 @@
 import React,{ useEffect, useState, useContext }  from 'react';
 import { LanguageContext } from '../context/languageContext';
+import { Link } from "react-router-dom";
 
 const NavBar = () => {
       // State for toggling the mobile menu
@@ -9,7 +10,7 @@ const NavBar = () => {
     
     const toggleBur = () =>{
         setIsOpen(!isOpen);
-        console.log(isOpen);
+        //console.log(isOpen);
     }  
     //give laguage, other views need to notice this
     const text = {
@@ -66,15 +67,22 @@ const NavBar = () => {
             </div>
              {/* Desktop menu hidden= hidden when phone verson*/}
             <div className='hidden fixed md:flex space-x-4 text-black'>
-                <a href="https://ruutikangas.fi/" className="hover:text-green-500"> {text[multiLang].home}</a>
+            <Link to="/" className="hover:text-green-500">
+            {text[multiLang].home}
+            </Link>
+              {/*     <link to="/home" className="hover:text-green-500">{text[multiLang].home}</link>*/}
                 {isSignin?(
                     <>
                        <a href="#logout" className="hover:text-green-500">{text[multiLang].signOut}</a>
                     </>
                 ):(
                     <>
-                    <a href="#kirjaudu" className="hover:text-green-500">{text[multiLang].signin}</a>
-                    <a href="#registeroidy" className="hover:text-green-500">{text[multiLang].register}</a>
+                   {/*   <a href="#kirjaudu" className="hover:text-green-500">{text[multiLang].signin}</a>
+                      <a href="#registeroidy" className="hover:text-green-500">{text[multiLang].register}</a>
+                   */}
+                   <Link to="/signIn" className="hover:text-green-500">{text[multiLang].signin}</Link>
+                   <Link to="/signUp" className="hover:text-green-500">{text[multiLang].register}</Link>
+                 
                     </>
                 )}
                 <a href="#contact" className="hover:text-green-500">{text[multiLang].contact}</a>
@@ -127,9 +135,10 @@ const NavBar = () => {
             >
             <button 
             className="text-black focus:outline-none"
-            onClick={toggleBur}
-
-
+            onClick={() => {
+                handleSignout();
+                toggleBur(); // Close menu on signout
+              }}
             >
                 <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -145,16 +154,16 @@ const NavBar = () => {
                 d="M6 18L18 6M6 6l12 12"
                 />
                 </svg>
-            </button>
-                <a href="https://ruutikangas.fi/" className="hover:text-green-500">{text[multiLang].home}</a>
+            </button>            
                 {isSignin?(
                     <>
                        <a href="#logout" className="hover:text-green-500">{text[multiLang].signOut}</a>
                     </>
                 ):(
                     <>
-                       <a href="#kirjaudu" className="hover:text-green-500">{text[multiLang].signin}</a>
-                       <a href="#registeroidy" className="hover:text-green-500">{text[multiLang].register}</a>
+                            <Link to="/" className="hover:text-green-500">{text[multiLang].home}</Link>
+                            <Link to="/signIn" className="hover:text-green-500">{text[multiLang].signin}</Link>
+                            <Link to="/signUp" className="hover:text-green-500">{text[multiLang].register}</Link>
                     </>
                 )}
                 <a href="#contact" className="hover:text-green-500">{text[multiLang].contact}</a>

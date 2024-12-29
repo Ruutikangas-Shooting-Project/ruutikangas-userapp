@@ -1,7 +1,10 @@
 import React, { useState, useContext  } from 'react';
+import { auth, db } from '../firebase';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { LanguageContext } from '../context/languageContext';
 //import '../styles/signup.css'; // Optional custom CSS
+import { createUserWithEmailAndPassword } from "firebase/auth"
+import { doc, setDoc } from "firebase/firestore";
 import { useNavigate } from 'react-router-dom';
 //import Header from './header';  
 //import NavBar from './navbar'; 
@@ -9,20 +12,24 @@ import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
   // State for input fields and password visibility
-  const [name, setName] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState(false); 
+
   //for multi language
   const { multiLang } = useContext(LanguageContext);
-
   const navigate = useNavigate();
+
   const text = {
     FI :{
         h1txt:"Rekisteröidy",
-        name:"Nimi",
+        firstname:"Etunimi",
+        lastName:"Sukunimi",
         email:"Säköposti",
         createpwd:"Sinun Salasana",
         confirmpwd:"Vahvista Salasana",
@@ -33,7 +40,8 @@ const SignUp = () => {
     
     EN :{
         h1txt:"Sign Up",
-        name:"Name",
+        firstName:"First Name",
+        lastName:"Last Name",
         email:"Email",
         createpwd:"Create Password",
         confirmpwd:"Confirm Password",
@@ -45,16 +53,39 @@ const SignUp = () => {
   }
 
   // Handler for form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
-      setError("Passwords do not match");
+      setError("Passwords do not match.");
       return;
     }
-    setError("");
-    console.log("Email:", email, "Password:", password);
-    // Redirect after successful signup
-    navigate('/signin'); 
+
+    if (!firstName || !lastName || !email || !password || !confirmPassword) {
+      setError("All fields are required.");
+      return;
+    }
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword
+      (auth, email, password);
+
+      const user = userCredential.user;
+  
+      // 在 Firestore 中新增用戶詳細資料
+      await setDoc(doc(db, "users", user.uid), {
+        fm: firstName,
+        lm: lastName,
+        //due to email save to auth
+        email: user.email, 
+      });
+      setSuccess(true);
+      console.log("User signed up and added to database:", user.uid);
+      navigate("/signin");
+    } catch (error) {
+      console.error("Error during signup:", error);
+      setError("Signup failed. Please try again.");
+      setSuccess(false);
+    }
   };
 
   return (
@@ -69,23 +100,42 @@ const SignUp = () => {
           <h1 className="text-center text-2xl md:text-3xl font-bold mb-6">
           {text[multiLang].h1txt}
           </h1>
+            {/* show successful or fail*/}
+        {success && (
+          <p className="text-green-500 text-center">
+            Registration successful! Direct to login...
+          </p>
+        )}
           {error && <p className="text-red-500 text-center">{error}</p>}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="form-group">
-              <label htmlFor="name" className="block text-sm font-medium">
-              {text[multiLang].name}
+              <label htmlFor="firstname" className="block text-sm font-medium">
+              {text[multiLang].firstName}
               </label>
               <input
-                type="name"
-                id="name"
-                name="name"
+                type="text"
+                id="firstName"
+                name="firstName"
                 className="form-control block w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:border-green-300"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
                 required
               />
                </div>
-        
+               <div className="form-group">
+              <label htmlFor="lastname" className="block text-sm font-medium">
+              {text[multiLang].lastName}
+              </label>
+              <input
+                type="text"
+                id="lastName"
+                name="lastName"
+                className="form-control block w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring focus:border-green-300"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                required
+              />
+               </div>
           
             <div className="form-group">
               <label htmlFor="email" className="block text-sm font-medium">

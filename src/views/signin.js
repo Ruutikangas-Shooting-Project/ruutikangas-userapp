@@ -61,7 +61,7 @@ const handleSubmit = async(e) => {
     await signInWithEmailAndPassword(auth, email, password);
     setError("");
     console.log("login successful");
-    navigate("dashboard");
+    navigate("/userData");
   }catch(err) {
     setError("wrong email or password");
     console.error(err.message);
