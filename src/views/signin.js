@@ -39,28 +39,17 @@ const SignIn = () => {
         noaccount:"Don’t have an account?"
     }
   }
-
-  // Handler for submitting the form
-  /*old code
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (email === "test@example.com" && password === "password") {
-      setError("");
-      console.log("Login successful");
-      // Redirect to dashboard or any other page after successful login
-      navigate('/dashboard');
-    } else {
-      setError("Invalid email or password");
-    }
-  };
-*/
 //new code test
 const handleSubmit = async(e) => {
   e.preventDefault();
   try {
-    await signInWithEmailAndPassword(auth, email, password);
-    setError("");
-    console.log("login successful");
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
+    //const idToken = await user.getIdToken(); 
+    const idToken = await user.getIdToken(true); //new code
+    console.log("Login successful, ID Token:", idToken);
+    localStorage.setItem("idToken", idToken); // save to localStorage, API can read
+    localStorage.setItem("tokenExpire", Date.now() + 9 * 60 * 1000); 
     navigate("/userData");
   }catch(err) {
     setError("wrong email or password");
@@ -69,11 +58,6 @@ const handleSubmit = async(e) => {
 };
   return (
     <>
-      {/* Include Header and NavBar 
-            <Header />
-      <NavBar />
-      */}
-
       <div className="min-h-screen flex items-center justify-center bg-gray-200">
         <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-md mx-auto md:max-w-lg">
           <h1 className="text-center text-2xl md:text-3xl font-bold mb-6">
@@ -109,7 +93,6 @@ const handleSubmit = async(e) => {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
-                {/* Toggle Button for Password Visibility */}
                 <button
                   type="button"
                   onClick={() => setIsPasswordVisible(!isPasswordVisible)}

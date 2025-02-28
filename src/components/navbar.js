@@ -1,13 +1,14 @@
 import React,{ useEffect, useState, useContext }  from 'react';
 import { LanguageContext } from '../context/languageContext';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import ShootingInfo from '../views/shootingInfo';
 
 const NavBar = () => {
-      // State for toggling the mobile menu
     const [isOpen, setIsOpen] = useState(false);
     const [isSignin, setIsSignin] = useState(false);
     const { multiLang } = useContext(LanguageContext); 
-    
+    const navigate = useNavigate(); 
+
     const toggleBur = () =>{
         setIsOpen(!isOpen);
         //console.log(isOpen);
@@ -19,6 +20,8 @@ const NavBar = () => {
             signin: 'Kirjaudu',
             register: 'Rekisteröidy',
             signOut: 'Ulos',
+            userData: 'Käyttäjätiedot',
+            ShootingInfo: 'Ammunta Info',
             contact: 'Yhteystiedot',
         },
         EN: {
@@ -26,23 +29,28 @@ const NavBar = () => {
             signin: 'Sign in',
             register: 'Register',
             signOut: 'Sign out',
+            userData: 'User data',
+            ShootingInfo: 'Shooting Info',
             contact: 'Contact us',
         }
         }  
     //setup login, token
-    useEffect(()=>{
-        const token = localStorage.getItem("token");
-        if(token) {
-            setIsSignin(true)
-        }else{
-            setIsSignin(false)
-        }  
+    useEffect(() => {
+        const checkToken = () => {
+            const token = localStorage.getItem("token");
+            console.log("Checking token:", token); // Debug: 確保 token 正確
+            setIsSignin(!!token); 
+        };
+        
+        checkToken(); 
+        window.addEventListener("storage", checkToken); 
+    
+        return () => {
+            window.removeEventListener("storage", checkToken); 
+        };
     }, []);
-
-    const handleSignin=()=>{
-        localStorage.setItem("token", "mockJWTtoken");
-        setIsSignin(true);
-    }  
+    
+    
     const handleSignout=()=>{
         localStorage.removeItem("token");
         setIsSignin(false);
@@ -67,33 +75,26 @@ const NavBar = () => {
             </div>
              {/* Desktop menu hidden= hidden when phone verson*/}
             <div className='hidden fixed md:flex space-x-4 text-black'>
-            <Link to="/" className="hover:text-green-500">
+            <Link to="/home" className="hover:text-green-500">
             {text[multiLang].home}
             </Link>
-              {/*     <link to="/home" className="hover:text-green-500">{text[multiLang].home}</link>*/}
-                {isSignin?(
-                    <>
-                       <a href="#logout" className="hover:text-green-500">{text[multiLang].signOut}</a>
-                    </>
-                ):(
-                    <>
-                   {/*   <a href="#kirjaudu" className="hover:text-green-500">{text[multiLang].signin}</a>
-                      <a href="#registeroidy" className="hover:text-green-500">{text[multiLang].register}</a>
-                   */}
-                   <Link to="/signIn" className="hover:text-green-500">{text[multiLang].signin}</Link>
-                   <Link to="/signUp" className="hover:text-green-500">{text[multiLang].register}</Link>
-                 
-                    </>
-                )}
-                <a href="#contact" className="hover:text-green-500">{text[multiLang].contact}</a>
+            {isSignin ? (
+           <>
+           <Link to="/userdata" className="hover:text-green-500">{text[multiLang].userData}</Link>
+           <Link to="/shootinginfo" className="hover:text-green-500">Shooting Info</Link> 
+           <button onClick={handleSignout} className="hover:text-red-500">{text[multiLang].signOut}</button>
+           </>
+        ) : (
+           <>
+        <Link to="/signIn" className="hover:text-green-500">{text[multiLang].signin}</Link>
+        <Link to="/signUp" className="hover:text-green-500">{text[multiLang].register}</Link>
+          </>
+        )}
             </div>
             {/* Hamburger for Mobile */}
-            {/*onClick={()=>setIsOpen(!isOpen)*/}
             <button
             className='md:hidden text-black focus:outline-none ml-2'
-            
             onClick={toggleBur}
-
             >
                 {!isOpen ? (
                     <svg
@@ -126,8 +127,7 @@ const NavBar = () => {
                 )}
             </button>
         </div>
-          {/* Mobile Menu onClick={()=>setIsOpen(false)}
-          */}
+          {/* Mobile Menu */}
           <div 
             className={`md:hidden fixed top-0 px-10 left-50 w-full h-full transition-transform transform ${
             isOpen ? 'translate-x-0' : 'translate-x-full'
@@ -137,7 +137,7 @@ const NavBar = () => {
             className="text-black focus:outline-none"
             onClick={() => {
                 handleSignout();
-                toggleBur(); // Close menu on signout
+                toggleBur(); 
               }}
             >
                 <svg
@@ -161,12 +161,14 @@ const NavBar = () => {
                     </>
                 ):(
                     <>
-                            <Link to="/" className="hover:text-green-500">{text[multiLang].home}</Link>
+                            <Link to="/home" className="hover:text-green-500">{text[multiLang].home}</Link>
                             <Link to="/signIn" className="hover:text-green-500">{text[multiLang].signin}</Link>
                             <Link to="/signUp" className="hover:text-green-500">{text[multiLang].register}</Link>
+                            <Link to="/userdata" className="hover:text-green-500">{text[multiLang].userData}</Link>
+                            <Link to="/shootinginfo" className="hover:text-green-500">{text[multiLang].ShootingInfo}</Link>
                     </>
                 )}
-                <a href="#contact" className="hover:text-green-500">{text[multiLang].contact}</a>
+                
           </div>
     </nav>
   );
