@@ -5,7 +5,7 @@ import { LanguageContext } from '../context/languageContext';
 
 const Footer = () => {
   const { multiLang, ChangeLanguage } = useContext(LanguageContext);
-  //give laguage, other views need to notice this
+  
   const text = {
     FI: {
         contactInfo: "Yhteystiedot",
@@ -51,9 +51,7 @@ const Footer = () => {
     <footer className="bg-black text-white py-8 max-w-screen-sm mx-auto">
          
         <div className="container mx-auto flex flex-col md:flex-row justify-between items-start">
-             {/* Contact Section */}
-
-             <div className='w-full md:w-1/2 mb-4 md:mb-0'>
+            <div className='w-full md:w-1/2 mb-4 md:mb-0'>
                  {/*<img src='/images/logo-light.png' alt="Shooting Center Logo" className="h-18 w-auto " />*/}
                 <h4 className='text-lg font-bold mb-4'>
                 {content.siteMap}</h4>
@@ -68,9 +66,8 @@ const Footer = () => {
                </ul>
              </div>
            
-             {/* Right side: Language & Auth Links (Always Visible) */}
              <div className='w-full md:w-1/2'>
-                 {/*<img src='/images/logo-light.png' alt="Shooting Center Logo" className="h-18 w-auto " />*/}
+                
                 <h4 className='text-lg font-bold mb-4'>
                 {content.contactInfo}</h4>
                <p>{content.contactDetail.name}</p>
@@ -78,10 +75,7 @@ const Footer = () => {
                <p>{content.contactDetail.phone}</p>
                <p>{content.contactDetail.email}</p>
              </div>
-        </div>
-           {/* mobile view */}
-
- 
+        </div> 
         
         </footer>
   );

@@ -8,6 +8,7 @@ import Home from './views/home';
 import Signin from './views/signin';
 import SignUp from './views/signup';
 import UserData from './views/userData';
+import ShootingInfo from './views/shootingInfo';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/signin" element={<Signin />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/UserData" element={<UserData />} />
+          <Route path="/ShootingInfo" element={<ShootingInfo />} />
           </Routes>
           <Footer />
         </div>

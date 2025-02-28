@@ -3,13 +3,11 @@ import headerImage from '../images/header-bg-800x350.jpg';
 import { LanguageContext } from '../context/languageContext';
 
 
-
 const Header = () => {
-      // State for toggling the mobile menu
   const [isOpen, setIsOpen] = useState(false);
-  //const [isSticky, setIsSticky]  = useState(false);
+  
   const {multiLang, ChangeLanguage } = useContext(LanguageContext);
-  //give laguage, other views need to notice this
+  
   const text = {
     FI: {
         title: "Ruutikankaan ampumaurheilukeskus",
@@ -21,51 +19,24 @@ const Header = () => {
     },
     };
 
-  //for scroll down then only show logo 
-  /*
-  const handleScroll = () => {
-    if(window.scroll > 100) {
-        setIsSticky(true);
-    }else { 
-        setIsSticky(false);
-     }
-  };
-  */
-
-  /*
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-  */
-
   return (
     
     <header 
     style={{ backgroundImage: `url(${headerImage})` }}
 
     className="bg-cover bg-center bg-white text-white p-4 h-[200px] md:h-[360px] w-full max-w-full xs:px-2 relative ">
-      {/*p-4 md:p-6 to adjust padding for mobile and desktop.
-            Changed height dynamically using h-[200px] for mobile and md:h-[360px] for larger screens.
-             old code <div className='container mx-auto flex flex-col  justify-between items-center px-4'>
-            */}
+   
         <div className='container mx-auto flex flex-col justify-between items-center w-full px-4'>
              {/* Left Section: Logo and Title */}
              <div className='flex items-center'>
-                 {/*<img src='/images/logo-light.png' alt="Shooting Center Logo" className="h-18 w-auto " />*/}
                 <h1 className='text-xl font-bold md:text-3xl lg:text-4xl w-full '>
                 {text[multiLang].title}</h1>
              </div>
              <p className='text-xs md:text-sm md:mt-4 lg:text-lg'>   {/* need to adjust position */}
              {text[multiLang].desc}</p>
             
-             {/* Right side: Language & Auth Links (Always Visible) */}
              <div className='absolute top-6 right-6 flex items-center space-x-4'>
-                 {/* Language Switch, change to use props
-                    <a href='#FI' className='text-white hover:text-green-500'>FI</a>
-                       <a href='#EN' className='text-white hover:text-green-500'>EN</a>
 
-                 */}
                 <div className='absolute top-6 right-6 flex space-x-2'>
                     <div className='flex space-x-2'>
                         <button
