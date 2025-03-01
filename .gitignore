@@ -21,3 +21,14 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+backend/service-account-key.json
+# Ignore environment variables (API keys, secrets)
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# Ignore Firebase configuration (if needed)
+firebase.json
+firebase-debug.log
