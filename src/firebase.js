@@ -3,28 +3,26 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
 
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-//put api key here for while, it will move .env avoid hacker get
 const firebaseConfig = {
-  apiKey: "AIzaSyDeYfQwYWdZ1r5VvRbrXBC5FW5G2hiI4P4", // from Firebase
-  authDomain: "ruutinkangas.firebaseapp.com",
-  projectId: "ruutinkangas",
-  storageBucket: "ruutinkangas.appspot.com",
-  messagingSenderId: "1039433779034",// from Firebase
-  appId: "1:1039433779034:web:47f6bc31723c7907381563",// from Firebase
-  measurementId: "G-F4JT0LZ73R" // optional, only if you use Analytics
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_APP_ID,
+  measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
 };
+
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);// Initialize Firestore
 const auth = getAuth(app); 
 const db = getFirestore(app); 
+const storage = getStorage(app);
 // Export Firestore to be used in other components
-export { db, auth };
+export { db, auth, storage };
 //export { auth };
